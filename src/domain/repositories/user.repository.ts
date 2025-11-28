@@ -20,6 +20,7 @@ export class UserRepository implements IUserRepositoryTDO {
             email: props.email,
             password: props.password,
             nickname: props.nickname,
+            avatar: props.avatar!,
             id: props.id!, // this can be a string or undefined; if it's undefined, the entity generates a new UUID
         }
 
@@ -33,7 +34,7 @@ export class UserRepository implements IUserRepositoryTDO {
             return null;
         }
 
-        return new User(user.email, user.password, user.nickname, user.id)
+        return new User(user.email, user.password, user.nickname, user.avatar, user.id)
     }
 
     async findById(id: string): Promise<User | null> {
@@ -43,11 +44,11 @@ export class UserRepository implements IUserRepositoryTDO {
             return null;
         }
 
-        return new User(user.email, user.password, user.nickname, user.id)
+       return new User(user.email, user.password, user.nickname, user.avatar, user.id)
     }
 
     async update(user: User): Promise<void> {
-
+ 
       //
       // In this scenario, the User must receive all previous (or current) values
       // from the database record or update func. These values are passed to the User instance
@@ -63,13 +64,15 @@ export class UserRepository implements IUserRepositoryTDO {
       // In this flow, sending the id is mandatory.
       //
       //
-
       const values: Omit<typeof usersTable.$inferInsert, 'id' | 'password'> = {
           email: user.email,
           nickname: user.nickname,
-      }
+          avatar: user.avatar!
+      } 
 
-      await db.update(usersTable).set(values).where(eq(usersTable.id, user.id!))
+        await db.update(usersTable).set(values).where(eq(usersTable.id, user.id!))
+    
+     
     }
 
     async delete(id: string): Promise<void> {

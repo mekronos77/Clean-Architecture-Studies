@@ -1,29 +1,23 @@
 import { User } from "../../domain/entities/user.entity";
 import type { IUserRepositoryTDO } from "../../domain/repositories/user.repository";
+import type { IUpdateUserDTO } from "../../DTOs/updateUser.dto";
 import type { IUseCase } from "../../shared/iusecase.shared";
-
-export interface IUpdateUserDTO {
-    id: string;
-    email?: string,
-    password?: string,
-    nickname?: string,
-}
 
 
 export class UpdateUser implements IUseCase<IUpdateUserDTO, void> {
     constructor(private userRepository: IUserRepositoryTDO) {}
     public async execute(props: IUpdateUserDTO) {
-
+ 
         const currentUserData = await this.userRepository.findById(props.id)
-
+        
         if (!currentUserData) {
              throw new Error("User do not exists anymore.")
         }
 
-        const user = new User(currentUserData.email, currentUserData.password, currentUserData.nickname, currentUserData.id)
+        const user = new User(currentUserData.email, currentUserData.password, currentUserData.nickname, currentUserData.avatar, currentUserData.id)
 
-        user.update({ nickname: props.nickname, email: props.email })
-
+        user.update({ nickname: props.nickname, email: props.email, avatar: props.avatar})
+    
         await this.userRepository.update(user)
 
         // The data sent by the user is optional, so the fields received by the update

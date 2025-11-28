@@ -1,17 +1,23 @@
-export class User{
+import type { IUpdateUserDTO } from "../../DTOs/updateUser.dto"
+export class User {
     constructor(
         public email: string,
         public password: string,
         public nickname: string,
+        public avatar?: string,
         public id?: string,
     ) {
-        if (!id) {
+        if (id === undefined) {
             this.id = crypto.randomUUID()
         }
+        if (!avatar) {
+            this.avatar = "a"
+        }
+
     }
 
 
-    update(props: {email: string | undefined, nickname: string | undefined}) {
+    update(props: Partial<Omit<IUpdateUserDTO, 'id'>>) {
         Object.entries(props).forEach(([key, value]) => {
             if (value !== undefined) {
                 (this as any)[key] = value
