@@ -1,4 +1,4 @@
-import { userEntityCaller } from "../../domain/entities/user.entity";
+import { newUserEntityCaller } from "../../domain/entities/user.entity";
 import type { ICreateUserDTO } from "../../DTOs/createUser.dto";
 import { Cryptography } from "../../infrastructure/services/hash.service";
 import type { IUseCase } from "../../shared/iusecase.shared";
@@ -12,7 +12,7 @@ export class CreateUser implements IUseCase<ICreateUserDTO, void> {
          // returned, it means all the data has already passed validation.
          const passwordHashed = await Cryptography.hash({ text: props.password })
          
-         const user = userEntityCaller({ email: props.email, password: passwordHashed, avatar: props.avatar, nickname: props.nickname})
+         const user = newUserEntityCaller({ email: props.email, password: passwordHashed, avatar: props.avatar, nickname: props.nickname})
 
          const emailExists = await this.userRepository.findByEmail(user.email)
          // I chose to get it directly from the User instance because the entity

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type { IUserRepositoryTDO } from "../../../../application/repositories/iuser.repository";
-import { User, userEntityCaller } from "../../../../domain/entities/user.entity";
+import { User, newUserEntityCaller } from "../../../../domain/entities/user.entity";
 import { db } from "../drizzle.database";
 import { usersTable } from "../schemas/user.schema";
 
@@ -27,7 +27,7 @@ export class UserRepository implements IUserRepositoryTDO {
             return null;
         }
         
-        return userEntityCaller({ email: user.email, password: user.password, nickname: user.nickname, avatar: user.avatar, id: user.id})
+        return newUserEntityCaller({ email: user.email, password: user.password, nickname: user.nickname, avatar: user.avatar, id: user.id})
     }
 
     async findById(id: string): Promise<User | null> {
@@ -37,7 +37,7 @@ export class UserRepository implements IUserRepositoryTDO {
             return null;
         }
 
-       return userEntityCaller({ email: user.email, password: user.password, nickname: user.nickname, avatar: user.avatar, id: user.id})
+       return newUserEntityCaller({ email: user.email, password: user.password, nickname: user.nickname, avatar: user.avatar, id: user.id})
        
     }
 

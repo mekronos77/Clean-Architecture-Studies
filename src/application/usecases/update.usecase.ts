@@ -1,4 +1,4 @@
-import { userEntityCaller } from "../../domain/entities/user.entity";
+import { newUserEntityCaller } from "../../domain/entities/user.entity";
 import type { IUpdateUserDTO } from "../../DTOs/updateUser.dto";
 import type { IUseCase } from "../../shared/iusecase.shared";
 import type { IUserRepositoryTDO } from "../repositories/iuser.repository";
@@ -15,7 +15,7 @@ export class UpdateUser implements IUseCase<IUpdateUserDTO, void> {
              throw new Error("User do not exists anymore.")
         }
 
-        const user = userEntityCaller({ email: currentUserData.email, password: currentUserData.password, nickname: currentUserData.nickname, avatar: currentUserData.avatar, id: currentUserData.id})
+        const user = newUserEntityCaller({ email: currentUserData.email, password: currentUserData.password, nickname: currentUserData.nickname, avatar: currentUserData.avatar, id: currentUserData.id})
 
         user.update({ nickname: props.nickname, email: props.email, avatar: props.avatar})
         
