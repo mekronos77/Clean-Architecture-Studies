@@ -1,6 +1,7 @@
 import type { IUpdateUserDTO } from "../../DTOs/updateUser.dto"
+import type { IUserDTO } from "../../DTOs/user.dto"
 
-export class User {
+export class User implements IUserDTO {
     constructor(
         public email: string,
         public password: string,
