@@ -1,17 +1,10 @@
 import { eq } from "drizzle-orm";
-import { db } from "../../infrastructure/database/drizzle.database";
-import { usersTable } from "../../infrastructure/database/schemas/user.schema";
-import { User } from "../entities/user.entity";
+import type { IUserRepositoryTDO } from "../../../../application/repositories/iuser.repository";
+import { User } from "../../../../domain/entities/user.entity";
+import { db } from "../drizzle.database";
+import { usersTable } from "../schemas/user.schema";
 
-export interface IUserRepositoryTDO {
 
-    save(props: User): Promise<void>
-    findByEmail(email: string): Promise<User | null>
-    findById(id: string): Promise<User | null>
-    update(user: User): Promise<void>
-    delete(id: string): Promise<void>
-
-}
 
 export class UserRepository implements IUserRepositoryTDO {
 
@@ -33,7 +26,7 @@ export class UserRepository implements IUserRepositoryTDO {
         if (!user) {
             return null;
         }
-
+        
         return new User(user.email, user.password, user.nickname, user.avatar, user.id)
     }
 

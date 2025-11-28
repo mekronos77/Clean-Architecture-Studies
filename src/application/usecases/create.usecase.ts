@@ -1,15 +1,17 @@
 import { User } from "../../domain/entities/user.entity";
-import type { IUserRepositoryTDO } from "../../domain/repositories/user.repository";
 import type { ICreateUserDTO } from "../../DTOs/createUser.dto";
+import { Cryptography } from "../../infrastructure/services/hash.service";
 import type { IUseCase } from "../../shared/iusecase.shared";
+import type { IUserRepositoryTDO } from "../repositories/iuser.repository";
+
 
 export class CreateUser implements IUseCase<ICreateUserDTO, void> {
     constructor(private userRepository: IUserRepositoryTDO) {}
     public async execute(props: ICreateUserDTO) {
-       try {
          // props represent unvalidated data. Once a User instance is created and
          // returned, it means all the data has already passed validation.
-         const user = new User(props.email, props.password, props.nickname, props.avatar)
+         const passwordHashed = await Cryptography.hash({ text: props.password })
+         const user = new User(props.email, passwordHashed, props.nickname, props.avatar)
 
          const emailExists = await this.userRepository.findByEmail(user.email)
          // I chose to get it directly from the User instance because the entity
@@ -20,10 +22,5 @@ export class CreateUser implements IUseCase<ICreateUserDTO, void> {
          }
 
          await this.userRepository.save(user)
-
-       } catch (error) {
-        throw error;
-       }
-
     }
 }

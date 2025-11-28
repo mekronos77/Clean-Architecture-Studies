@@ -10,14 +10,13 @@ export class User {
         if (id === undefined) {
             this.id = crypto.randomUUID()
         }
-        if (!avatar) {
+        if (avatar === undefined) {
             this.avatar = "a"
         }
 
     }
 
-
-    update(props: Partial<Omit<IUpdateUserDTO, 'id'>>) {
+    update(props: Omit<IUpdateUserDTO, 'id'>) {
         Object.entries(props).forEach(([key, value]) => {
             if (value !== undefined) {
                 (this as any)[key] = value

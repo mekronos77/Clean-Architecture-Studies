@@ -1,10 +1,10 @@
-// TODO: do this hehe
+// TODO: do this hehec
 
-import { UpdateUser } from "./application/usecases/update.usecase";
-import { UserRepository } from "./domain/repositories/user.repository";
+import { CreateUser } from "./application/usecases/create.usecase";
+import { UserRepository } from "./infrastructure/database/drizzle/repositories/user.repository";
 
+const create = new CreateUser(new UserRepository)
 
-const update = new UpdateUser(new UserRepository)
-
-await update.execute({id: "05f185ae-ac93-4cc1-bf4e-bb790999b5af", nickname: "testando"})
-
+async function createUser(nickname: string, email: string, password: string) {
+    await create.execute({ nickname: nickname, email: email, password: password})
+}

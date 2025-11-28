@@ -1,7 +1,8 @@
 import { User } from "../../domain/entities/user.entity";
-import type { IUserRepositoryTDO } from "../../domain/repositories/user.repository";
 import type { IUpdateUserDTO } from "../../DTOs/updateUser.dto";
 import type { IUseCase } from "../../shared/iusecase.shared";
+import type { IUserRepositoryTDO } from "../repositories/iuser.repository";
+
 
 
 export class UpdateUser implements IUseCase<IUpdateUserDTO, void> {
