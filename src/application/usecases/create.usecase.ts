@@ -4,24 +4,28 @@ import { Cryptography } from "../../infrastructure/services/hash.service";
 import type { IUseCase } from "../../shared/iusecase.shared";
 import type { IUserRepositoryTDO } from "../repositories/iuser.repository";
 
-
 export class CreateUser implements IUseCase<ICreateUserDTO, void> {
-    constructor(private userRepository: IUserRepositoryTDO) {}
-    public async execute(props: ICreateUserDTO) {
-         // props represent unvalidated data. Once a User instance is created and
-         // returned, it means all the data has already passed validation.
-         const passwordHashed = await Cryptography.hash({ text: props.password })
-         
-         const user = newUserEntityCaller({ email: props.email, password: passwordHashed, avatar: props.avatar, nickname: props.nickname})
+  constructor(private userRepository: IUserRepositoryTDO) {}
+  public async execute(props: ICreateUserDTO) {
+    // props represent unvalidated data. Once a User instance is created and
+    // returned, it means all the data has already passed validation.
+    const passwordHashed = await Cryptography.hash({ text: props.password });
 
-         const emailExists = await this.userRepository.findByEmail(user.email)
-         // I chose to get it directly from the User instance because the entity
-         // is responsible for handling validation.
+    const user = newUserEntityCaller({
+      email: props.email,
+      password: passwordHashed,
+      avatar: props.avatar,
+      nickname: props.nickname
+    });
 
-         if (emailExists) {
-             throw new Error("Email already exists, try another one.")
-         }
+    const emailExists = await this.userRepository.findByEmail(user.email);
+    // I chose to get it directly from the User instance because the entity
+    // is responsible for handling validation.
 
-         await this.userRepository.save(user)
+    if (emailExists) {
+      throw new Error("Email already exists, try another one.");
     }
+
+    await this.userRepository.save(user);
+  }
 }

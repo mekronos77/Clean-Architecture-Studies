@@ -5,28 +5,26 @@ import type { IUseCase } from "../../shared/iusecase.shared";
 import type { IUserRepositoryTDO } from "../repositories/iuser.repository";
 
 export class LoginUser implements IUseCase<ILoginUser, string> {
-    constructor(private userRepository: IUserRepositoryTDO) {}
-    async execute(props: ILoginUser): Promise<string> {
+  constructor(private userRepository: IUserRepositoryTDO) {}
+  async execute(props: ILoginUser): Promise<string> {
+    const user = await this.userRepository.findByEmail(props.email);
 
-        const user = await this.userRepository.findByEmail(props.email)
-
-        if(!user) {
-            throw new Error("User do not exists.")
-        }
-
-        if (!await Cryptography.compare({ value: props.password, hash: user.password})) {
-            throw new Error("incorrect password.")
-        }
-
-        const payload = {
-            id: user.id
-        }
-
-        const jwt = new JwtService(process.env.JWT_SECRET!)
-
-        const token = jwt.sign({ payload: payload })
-
-        return token
-
+    if (!user) {
+      throw new Error("User do not exists.");
     }
+
+    if (!(await Cryptography.compare({ value: props.password, hash: user.password }))) {
+      throw new Error("incorrect password.");
+    }
+
+    const payload = {
+      id: user.id
+    };
+
+    const jwtService = new JwtService(process.env.JWT_SECRET!);
+
+    const token = jwtService.sign({ payload: payload });
+
+    return token;
+  }
 }
