@@ -1,4 +1,5 @@
 import z from "zod";
+import type { usersTable } from "../infrastructure/database/drizzle/schemas/user.schema";
 
 export const updateUserSchema = z.object({
   id: z.uuid(),
@@ -9,10 +10,6 @@ export const updateUserSchema = z.object({
   password: z.string().optional()
 });
 
-export type TUpdateUserDTO = {
+export interface IUpdateUser extends Partial<Omit<typeof usersTable.$inferInsert, "id">> {
   id: string;
-  avatar?: string;
-  nickname?: string;
-  email?: string;
-  password?: string;
-};
+}
