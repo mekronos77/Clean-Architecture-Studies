@@ -1,9 +1,9 @@
-import type { User } from "../../domain/entities/user.entity";
+import type { TUser } from "../../domain/entities/user.entity";
 
 export interface IUserRepositoryTDO {
-  save(props: User): Promise<void>;
-  findByEmail(email: string): Promise<User | null>;
-  findById(id: string): Promise<User | null>;
-  update(user: User): Promise<void>;
+  save(props: TUser): Promise<void>;
+  findByEmail(email: string): Promise<TUser | null>;
+  findById(id: string): Promise<TUser | null>;
+  update(user: TUser): Promise<void>;
   delete(id: string): Promise<void>;
 }

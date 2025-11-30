@@ -1,3 +1,12 @@
-import type { IUserDTO } from "./user.dto";
+import zod from "zod";
 
-export interface ICreateUserDTO extends Omit<IUserDTO, "id"> {}
+export const createUserSchema = zod
+  .object({
+    nickname: zod.string(),
+    password: zod.string(),
+    email: zod.email(),
+    avatar: zod.url()
+  })
+  .strict();
+
+export type ICreateUserDTO = zod.infer<typeof createUserSchema>;

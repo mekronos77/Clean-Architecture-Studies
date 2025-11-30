@@ -1,5 +1,6 @@
 import { HttpError } from "../../core/errors/httpError.error";
-import type { ILoginUser } from "../../DTOs/loginUser.dto";
+import type { ILoginUser } from "../../dtos/login.dto";
+
 import { Cryptography } from "../../infrastructure/services/hash.service";
 import { jwtService } from "../../infrastructure/services/jwt.service";
 
@@ -24,6 +25,7 @@ export class LoginUser implements IUseCase<ILoginUser, string> {
     };
 
     const token = jwtService.sign({ payload: payload }); // secret already comes in the instance in jwt.service.ts
+
     return token;
   }
 }

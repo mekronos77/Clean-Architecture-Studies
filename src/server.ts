@@ -1,4 +1,5 @@
 import express, { type ErrorRequestHandler, type NextFunction, type Request, type Response } from "express";
+import zod, { ZodError } from "zod";
 import userRouter from "./presentation/routes/user.router";
 
 const app = express();
@@ -10,6 +11,12 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
 
   const status = err.status || 500;
   const message = err.message || "Internal Error";
+
+  if (err instanceof ZodError) {
+    return res.status(status).json({
+      error: zod.prettifyError(err)
+    });
+  }
 
   return res.status(status).json({
     error: message
